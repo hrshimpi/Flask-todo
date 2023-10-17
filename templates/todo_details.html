@@ -1,0 +1,36 @@
+{% from "macros/svgs.jinja2" import star, pencil, bin %}
+
+{% extends "layout.html" %}
+
+{%- block head_content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/todo_details.css') }}" />
+{% endblock %}
+
+{% block main_content %}
+<div class="container">
+    <header class="todo__header">
+        <div class="header__row">
+            <div class="todo__name">
+                <h1>{{ todo.title }}</h1>
+            </div>
+            <div class="todo__date">
+                {% if todo.due_date %}
+                    <p>
+                        Due at <time datetime="{{ todo.due_date }}">{{todo.due_date.strftime("%d %b %Y")}}</time>
+                    </p>
+                {% endif %}
+                <a class="todo__edit" href="{{ url_for('pages.edit_todo', _id=todo._id) }}">Edit {{ pencil("pencil") }}</a>
+                <a class="todo__delete" href="{{ url_for('pages.delete_todo', _id=todo._id) }}">Delete {{ bin("bin") }}</a>
+            </div>
+        </div>
+    </header>
+
+
+    {% if todo.description %}
+        <p class="todo__description">{{ todo.description }}</p>
+    {% else %}
+        <p class="todo__description">No description yet. <a class="link" href="{{ url_for('pages.edit_todo', _id=todo._id) }}">Add one?</a></p>
+    {% endif %}
+    
+</div>
+{% endblock %}

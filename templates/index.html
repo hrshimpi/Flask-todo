@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+
+{% block head_content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/todos.css') }}" />
+{% endblock %}
+
+{% block main_content %}
+
+    {%- if todos_data %}
+        <table class="table">
+            <colgroup>
+                <col style="width: 60%">
+                <col style="width: 25%">
+                <col style="width: 15%">
+            </colgroup>
+            <thead>
+                <tr class="table__header">
+                    <th class="table__cell table__cell--header">Title</th>
+                    <th class="table__cell table__cell--header">Due Date</th>
+                    <th class="table__cell table__cell--header"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in todos_data %}
+                    <tr>
+                        <td class="table__cell">
+                            <p class="table__todoTitle">{{ todo.title }}</p>
+                            <p class="table__todoDescription">By {{ todo.description }}</p>
+                        </td>
+                        <td class="table__cell">{{todo.due_date.strftime("%d %b %Y")}}</td>
+                        <td class="table__cell"><a href="{{ url_for('pages.todo', _id=todo._id) }}" class="table__link">View</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    {% else %}
+        <p class="table__empty">You haven't added any todos yet. <a href="{{ url_for('pages.add_todo') }}" class="link">Add one!</a></p>
+    {% endif %}
+
+    <a href="{{ url_for('pages.add_todo') }}" class="button button--add">
+        <span>+</span>
+    </a>
+
+{% endblock %}
